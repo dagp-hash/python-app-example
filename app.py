@@ -8,7 +8,7 @@ st.set_page_config(page_title="Python Discovery Lab", page_icon="🧪")
 st.sidebar.title("Select a Project")
 app_mode = st.sidebar.selectbox(
     "What do you want to try?",
-    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator"]
+    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator","😵 Mood Painter"]
 )
 
 # --- HOME PAGE ---
@@ -63,7 +63,48 @@ elif app_mode == "🤖 Cyber-Hero Creator":
             st.image(f"https://robohash.org/{hero_name}.png?set=set1", width=200)
         else:
             st.error("Please enter a name first!")
+            
+# --- PROJECT 3: MOOD PAINTER ---
+elif app_mode == "🌈 Mood Painter":
+    st.title("🌈 Python Mood Painter")
+    st.write("Type a sentence about how you are feeling. Python will 'read' your emotions!")
+
+    user_text = st.text_input("How is your day going?", placeholder="e.g. I am having an amazing day!")
+
+    if st.button("Analyze My Vibes"):
+        if user_text:
+            # Simple Logic: We search for "keywords" to simulate AI understanding
+            # In real life, we'd use a library like 'TextBlob', but this is great for beginners!
+            positive_words = ["happy", "great", "amazing", "good", "cool", "fun", "excited"]
+            negative_words = ["sad", "bad", "bored", "tired", "angry", "hate"]
+
+            # Count the vibes
+            score = 0
+            for word in positive_words:
+                if word in user_text.lower(): score += 1
+            for word in negative_words:
+                if word in user_text.lower(): score -= 1
+
+            # Change UI based on "Sentiment"
+            if score > 0:
+                st.balloons()
+                st.success("✨ POSITIVE VIBES DETECTED!")
+                # Generate a "Happy" abstract art image
+                st.image(f"https://picsum.photos/seed/{user_text}/800/400", caption="Your Mood in Colors")
+            elif score < 0:
+                st.info("🌧️ Looks like a rainy day mood.")
+                st.image(f"https://picsum.photos/seed/dark/800/400?grayscale", caption="The Grayscale of Logic")
+            else:
+                st.warning("😐 Neutral Vibes. Try using more descriptive words!")
+            
+            st.write(f"**Python Logic Result:** Sentiment Score = {score}")
+        else:
+            st.error("Write something first!")
+
+    with st.expander("🤔 How does Python 'Read'?"):
+        st.write("We created two lists: `positive_words` and `negative_words`. Python loops through your sentence and counts them. This is the foundation of **Natural Language Processing (NLP)**!")
 
 # --- FOOTER ---
 st.sidebar.markdown("---")
 st.sidebar.write("Created with ❤️ by your Teacher")
+
