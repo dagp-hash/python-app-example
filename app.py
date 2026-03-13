@@ -1,110 +1,110 @@
 import streamlit as st
 import random
 
-# 1. Page Configuration
-st.set_page_config(page_title="Python Discovery Lab", page_icon="🧪")
+# --- 1. PAGE CONFIGURATION ---
+st.set_page_config(page_title="Python Discovery Lab", page_icon="🧪", layout="centered")
 
-# 2. Sidebar Navigation
-st.sidebar.title("Select a Project")
+# --- 2. SIDEBAR NAVIGATION ---
+st.sidebar.title("🚀 Navigation")
+st.sidebar.write("Switch between projects below:")
 app_mode = st.sidebar.selectbox(
-    "What do you want to try?",
-    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator","😵 Mood Painter"]
+    "Choose a Project:",
+    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator", "🌈 Mood Painter"]
 )
 
-# --- HOME PAGE ---
+# --- 3. HOME PAGE ---
 if app_mode == "Home":
     st.title("🐍 Welcome to the Python Lab!")
-    st.write("""
-    This app was built entirely in **Python**. 
-    Use the menu on the left to switch between two different projects!
+    st.markdown("""
+    ### Why are we here?
+    Today, you aren't just using an app—you're looking at the **logic** that builds the internet. 
+    Python is the language used by NASA, Spotify, and Netflix.
     
-    * **Project 1:** Tests your logic with numbers.
-    * **Project 2:** Uses text and images to create something new.
+    **Try the projects in the sidebar to see what Python can do!**
     """)
-    st.image("https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800", caption="Coding is your new superpower.")
+    # A cool coding-themed image
+    st.image("https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800", caption="Code is the language of the future.")
 
-# --- PROJECT 1: MYSTERY NUMBER ---
+# --- 4. PROJECT 1: MYSTERY NUMBER ---
 elif app_mode == "🔢 Mystery Number":
     st.title("🔢 The Mystery Number Game")
+    st.write("Can you beat the computer's brain?")
     
     if 'secret' not in st.session_state:
         st.session_state.secret = random.randint(1, 100)
         st.session_state.count = 0
 
-    guess = st.number_input("Guess a number (1-100):", min_value=1, max_value=100)
+    guess = st.number_input("Enter a guess (1-100):", min_value=1, max_value=100)
     
-    if st.button("Submit Guess"):
+    if st.button("Check Guess"):
         st.session_state.count += 1
         if guess < st.session_state.secret:
-            st.warning("Higher! 📈")
+            st.warning("Too low! 📈 Try a bigger number.")
         elif guess > st.session_state.secret:
-            st.warning("Lower! 📉")
+            st.warning("Too high! 📉 Try a smaller number.")
         else:
-            st.success(f"Correct! It took you {st.session_state.count} tries.")
+            st.success(f"BOOM! You found it in {st.session_state.count} tries!")
             st.balloons()
-            if st.button("Reset Game"):
-                del st.session_state.secret
+            if st.button("Play Again?"):
+                st.session_state.secret = random.randint(1, 100)
+                st.session_state.count = 0
 
-# --- PROJECT 2: CYBER-HERO ---
+# --- 5. PROJECT 2: CYBER-HERO CREATOR ---
 elif app_mode == "🤖 Cyber-Hero Creator":
     st.title("🤖 Cyber-Hero Identity")
+    st.write("Input your data to generate a unique digital avatar.")
     
-    u_name = st.text_input("Enter your name:")
-    u_power = st.selectbox("Choose your Element:", ["Fire", "Ice", "Code", "Gravity"])
+    u_name = st.text_input("What is your name?")
+    u_power = st.selectbox("Select your Power Source:", ["Solar", "Atomic", "Digital", "Magic"])
     
-    if st.button("Initialize Hero"):
+    if st.button("Generate Hero"):
         if u_name:
-            adj = ["Quantum", "Shadow", "Neon", "Turbo"]
-            hero_name = f"{random.choice(adj)} {u_name}"
-            st.header(f"Hero Name: {hero_name}")
-            st.subheader(f"Power: {u_power} Manipulation")
+            adjectives = ["Quantum", "Shadow", "Neon", "Turbo", "Glitch", "Iron"]
+            hero_name = f"{random.choice(adjectives)} {u_name}"
+            st.header(f"Your Hero: {hero_name}")
+            st.info(f"Primary Ability: {u_power} Blasts")
             
-            # Generates a unique robot based on the name
-            st.image(f"https://robohash.org/{hero_name}.png?set=set1", width=200)
+            # This generates a unique robot face based on the hero name
+            st.image(f"https://robohash.org/{hero_name}.png?set=set1", width=250)
         else:
             st.error("Please enter a name first!")
-            
-# --- PROJECT 3: MOOD PAINTER ---
+
+# --- 6. PROJECT 3: MOOD PAINTER ---
 elif app_mode == "🌈 Mood Painter":
     st.title("🌈 Python Mood Painter")
-    st.write("Type a sentence about how you are feeling. Python will 'read' your emotions!")
+    st.write("How are you feeling today? Python will 'read' your words.")
 
-    user_text = st.text_input("How is your day going?", placeholder="e.g. I am having an amazing day!")
+    user_text = st.text_input("Type a sentence about your day:", placeholder="I'm feeling amazing!")
 
     if st.button("Analyze My Vibes"):
         if user_text:
-            # Simple Logic: We search for "keywords" to simulate AI understanding
-            # In real life, we'd use a library like 'TextBlob', but this is great for beginners!
-            positive_words = ["happy", "great", "amazing", "good", "cool", "fun", "excited"]
-            negative_words = ["sad", "bad", "bored", "tired", "angry", "hate"]
+            # Simple keyword matching logic
+            pos_words = ["happy", "great", "amazing", "good", "cool", "fun", "excited", "awesome"]
+            neg_words = ["sad", "bad", "bored", "tired", "angry", "hate", "terrible"]
 
-            # Count the vibes
             score = 0
-            for word in positive_words:
-                if word in user_text.lower(): score += 1
-            for word in negative_words:
-                if word in user_text.lower(): score -= 1
+            text_lower = user_text.lower()
+            for word in pos_words:
+                if word in text_lower: score += 1
+            for word in neg_words:
+                if word in text_lower: score -= 1
 
-            # Change UI based on "Sentiment"
             if score > 0:
                 st.balloons()
                 st.success("✨ POSITIVE VIBES DETECTED!")
-                # Generate a "Happy" abstract art image
+                # Shows a bright colorful image
                 st.image(f"https://picsum.photos/seed/{user_text}/800/400", caption="Your Mood in Colors")
             elif score < 0:
-                st.info("🌧️ Looks like a rainy day mood.")
-                st.image(f"https://picsum.photos/seed/dark/800/400?grayscale", caption="The Grayscale of Logic")
+                st.info("🌧️ Rainy day vibes detected.")
+                # Shows a grayscale image
+                st.image(f"https://picsum.photos/seed/{user_text}/800/400?grayscale", caption="The Grayscale of Logic")
             else:
-                st.warning("😐 Neutral Vibes. Try using more descriptive words!")
+                st.warning("😐 Neutral / Mystery Vibes. Try more descriptive words!")
             
-            st.write(f"**Python Logic Result:** Sentiment Score = {score}")
+            st.write(f"**Python Logic Result:** Happiness Score = {score}")
         else:
-            st.error("Write something first!")
-
-    with st.expander("🤔 How does Python 'Read'?"):
-        st.write("We created two lists: `positive_words` and `negative_words`. Python loops through your sentence and counts them. This is the foundation of **Natural Language Processing (NLP)**!")
+            st.error("You need to type something first!")
 
 # --- FOOTER ---
 st.sidebar.markdown("---")
-st.sidebar.write("Created with ❤️ by your Teacher")
-
+st.sidebar.write("🛠️ Created for Grade 8 Tech Lab")
