@@ -9,7 +9,7 @@ st.sidebar.title("🚀 Navigation")
 st.sidebar.write("Switch between projects below:")
 app_mode = st.sidebar.selectbox(
     "Choose a Project:",
-    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator", "🌈 Mood Painter"]
+    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator", "🖌️ Mood Painter"]
 )
 
 # --- 3. HOME PAGE ---
@@ -70,8 +70,8 @@ elif app_mode == "🤖 Cyber-Hero Creator":
             st.error("Please enter a name first!")
 
 # --- 6. PROJECT 3: MOOD PAINTER ---
-elif app_mode == "🌈 Mood Painter":
-    st.title("🌈 Python Mood Painter")
+elif app_mode == "🖌️ Mood Painter":
+    st.title("🖌️ Python Mood Painter")
     st.write("How are you feeling today? Python will 'read' your words.")
 
     user_text = st.text_input("Type a sentence about your day:", placeholder="I'm feeling amazing!")
@@ -108,3 +108,4 @@ elif app_mode == "🌈 Mood Painter":
 # --- FOOTER ---
 st.sidebar.markdown("---")
 st.sidebar.write("🛠️ Created for Grade 8 Tech Lab")
+
