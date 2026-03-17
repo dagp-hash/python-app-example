@@ -1,4 +1,1 @@
 streamlit
-streamlit-webrtc
-mediapipe
-opencv-python-headless
