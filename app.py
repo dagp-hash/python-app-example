@@ -9,7 +9,7 @@ st.sidebar.title("🚀 Navigation")
 st.sidebar.write("Switch between projects below:")
 app_mode = st.sidebar.selectbox(
     "Choose a Project:",
-    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator", "🖌️ Mood Painter"]
+    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator", "🖌️ Mood Painter","📷Cam Game"]
 )
 
 # --- 3. HOME PAGE ---
@@ -104,6 +104,62 @@ elif app_mode == "🖌️ Mood Painter":
             st.write(f"**Python Logic Result:** Happiness Score = {score}")
         else:
             st.error("You need to type something first!")
+    elif app_mode == "📷Cam Game":
+        import streamlit as st
+import random
+import cv2
+import mediapipe as mp
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
+
+# --- 1. PAGE CONFIG ---
+st.set_page_config(page_title="Python Discovery Lab", page_icon="🧪")
+
+# --- 2. SIDEBAR ---
+app_mode = st.sidebar.selectbox(
+    "Choose a Project:",
+    ["Home", "🔢 Mystery Number", "🤖 Cyber-Hero Creator", "🌈 Mood Painter", "📐 Triangle Master", "📸 AI Gesture Camera"]
+)
+
+# ... (Keeping previous Home, Mystery Number, Hero, Mood, and Triangle code here) ...
+
+# --- NEW! PROJECT 4: AI GESTURE CAMERA ---
+elif app_mode == "📸 AI Gesture Camera":
+    st.title("📸 AI Hand-Tracking Camera")
+    st.write("This uses **Mediapipe AI** to track your hand in real-time through the browser!")
+
+    # Mediapipe setup
+    mp_hands = mp.solutions.hands
+    hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5)
+    mp_draw = mp.solutions.drawing_utils
+
+    class VideoProcessor(VideoTransformerBase):
+        def transform(self, frame):
+            img = frame.to_ndarray(format="bgr24")
+            img = cv2.flip(img, 1)
+            
+            # AI Processing
+            results = hands.process(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+            
+            if results.multi_hand_landmarks:
+                for hand_lms in results.multi_hand_landmarks:
+                    mp_draw.draw_landmarks(img, hand_lms, mp_hands.HAND_CONNECTIONS)
+                    
+                    # Detect Pinch (Calculation like your code)
+                    thumb = hand_lms.landmark[4]
+                    index = hand_lms.landmark[8]
+                    dist = ((thumb.x - index.x)**2 + (thumb.y - index.y)**2)**0.5
+                    
+                    if dist < 0.04:
+                        cv2.putText(img, "PINCH DETECTED!", (50, 50), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            
+            return img
+
+    webrtc_streamer(key="gesture", video_transformer_factory=VideoProcessor)
+    
+    st.info("💡 Note: You'll need to allow camera access in your browser to try this!")
+
+# (Make sure to include the elif blocks for the other projects we built above!)
 
 # --- FOOTER ---
 st.sidebar.markdown("---")
